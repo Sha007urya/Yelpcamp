@@ -11,12 +11,13 @@
                        </div>
                </div>
                <div class="mb-3">
-                    <label class="form-label" for="location">Location</label>
-                    <input class="form-control" type="text" id="location" name="campground[location]" required>
-                    <div class="valid-feedback">
-                         Looks good!
-                       </div>
-               </div>
+                <label class="form-label" for="title">location</label>
+                <input class="form-control" type="text" id="location" name="campground[location]" required>
+                <div class="valid-feedback">
+                     Looks good!
+                   </div>
+           </div>
+              
                <div class="mb-3">
                     <label class="form-label" for="image">Image Url</label>
                     <input class="form-control" type="text" id="image" name="campground[image]" required>
@@ -48,4 +49,26 @@
           <a href="/campgrounds">All campgrounds</a>
      </div>
     </div>
+    <script>
+     // Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.validated-form')
+
+  // Loop over them and prevent submission
+  Array.from(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+    </script>
 

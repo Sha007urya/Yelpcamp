@@ -22,7 +22,7 @@ const seedDB = async () => {
             author: '66660950a6d04832d7f45dca',
             location: `${cities[random1000].city},${cities[random1000].state}`,
             title: `${sample(descriptors)},${sample(places)}`,
-            image: `https://source.unsplash.com/collection/483251?client_id=${unsplashAccessKey}`,
+            image: `https://unsplash.com/collections/483251/in-the-woods`,
             description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus magni ab qui aliquid, aut maiores'
         });
 

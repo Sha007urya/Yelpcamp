@@ -1,4 +1,3 @@
-const unsplashAccessKey = 'A_kAG4fGzAtR7LO9Z6xHfJeYIUlW6IFYwIkaH0GEtBs'; // Replace this with your actual access key
 
 const mongoose = require('mongoose');
 const Campground = require('../models/campground');

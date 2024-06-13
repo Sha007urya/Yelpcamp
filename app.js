@@ -1,9 +1,6 @@
 if(process.env.NODE_ENV !=="production"){
      require('dotenv').config();
 }
-console.log(process.env.SECRET)
-console.log(process.env.API_KEY)
-
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -23,6 +20,7 @@ const User=require('./models/user');
 const campgroundsRoutes=require('./routes/campgrounds');
 const reviewsRoutes=require('./routes/reviews');
 const userRoutes=require('./routes/users');
+
 mongoose.connect('mongodb://localhost:27017/yelp-camp', { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));

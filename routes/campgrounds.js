@@ -10,11 +10,14 @@ const multer=require('multer');
 const {storage}=require('../cloudinary');
 const upload=multer({storage});
 
+
 router.route('/')
      .get(CatchAsync(campgrounds.index))
-     .post(upload.single('image'),(req,res)=>{
-          res.send('It worked');
-     })
+     .post(isLoggedIn,upload.array('image'),validateCampground,CatchAsync(campgrounds.createCampground))
+     // .post(upload.array('image'),(req,res)=>{
+     //      console.log(req.body,req.files);
+     //      res.send("It worked");
+     // })
 
 
 router.get('/new', isLoggedIn, campgrounds.renderNewForm);

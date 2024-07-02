@@ -16,13 +16,18 @@ const Review=require('./models/review');
 const passport=require('passport');
 const LocalStrategy=require('passport-local');
 const User=require('./models/user');
+const MongoDBStore=require("connect-mongo")(session);
 // const helmet=require('helmet');
 
 const campgroundsRoutes=require('./routes/campgrounds');
 const reviewsRoutes=require('./routes/reviews');
 const userRoutes=require('./routes/users');
-const mongoSanitize=require('./models/user')
-mongoose.connect('mongodb://localhost:27017/yelp-camp', { useNewUrlParser: true, useUnifiedTopology: true })
+// const dbUrl=process.env.DB_URL
+const dbUrl='mongodb://localhost:27017/yelp-camp';
+
+const mongoSanitize=require('./models/user');
+const { MongoStore } = require('connect-mongo');
+mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -38,7 +43,17 @@ app.use(express.static(path.join(__dirname,'public')));
 // app.use(mongoSanitize(
 //      {replaceWith:'_'}
 // ));
+const store=new MongoDBStore({
+     url: dbUrl,
+     secret:'thisshouldbeabettersecret!',
+     touchAfter:24*60*60
+
+});
+store.on("error",function(e){
+     console.log("SESSION STORE ERROR",e);
+})
 const sessionConfig={
+     store,
      name:'session',
      secret:'thisshouldbeabettersecret!',
      resave:false,
@@ -63,12 +78,7 @@ app.use((req,res,next)=>{
      res.locals.error=req.flash('error');
      next();
 })
-app.use('/fakeUser', async(req,res)=>{
-     const user=new User({email:'shaurya@gmail.com',username:'shaurya'});
-     const newUser=await User.register(user,'chicken');
-     res.send(newUser);
 
-})
 
 app.get('/', (req, res) => {
      res.render('home');
@@ -80,6 +90,7 @@ app.use('/campgrounds/:id/reviews',reviewsRoutes);
 app.all('*', (req, res, next) => {
      next(new ExpressError('Page not found', 404))
 })
+
 app.use((err, req, res, next) => {
      const { status_code = 500, message = 'Oh boy something went wrong' } = err;
      if (!err.message) {
